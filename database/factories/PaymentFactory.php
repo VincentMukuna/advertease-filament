@@ -1,0 +1,35 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+use App\Models\Campaign;
+use App\Models\Payment;
+
+class PaymentFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Payment::class;
+
+    /**
+     * Define the model's default state.
+     */
+    public function definition(): array
+    {
+        return [
+            'reference' => 'PAY' . $this->faker->unique()->randomNumber(6),
+            'currency' => $this->faker->currencyCode(),
+            'amount' => $this->faker->randomFloat(2, 100, 2000),
+            'provider' => $this->faker->randomElement(['stripe', 'paypal']),
+            'method' => $this->faker->randomElement(['credit_card', 'bank_transfer', 'paypal', 'mpesa']),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
+            'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
+            'campaign_id' => Campaign::factory(),
+        ];
+    }
+}
