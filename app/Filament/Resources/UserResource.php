@@ -20,12 +20,22 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required(),
-            ]);
+                         Forms\Components\TextInput::make('name')
+                             ->required(),
+                         Forms\Components\TextInput::make('email')
+                             ->email()
+                             ->unique('users')
+                             ->required(),
+//                         Forms\Components\Select::make('roles')
+//                             ->relationship('roles', 'name')
+//                             ->multiple()
+//                             ->preload()
+//                             ->searchable(),
+                         Forms\Components\TextInput::make('password')
+                             ->password()
+                             ->hiddenOn(['view', 'edit'])
+                             ->required(),
+                     ]);
     }
 
     public static function table(Table $table): Table
