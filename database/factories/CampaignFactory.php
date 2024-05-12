@@ -20,6 +20,7 @@ class CampaignFactory extends Factory
     public function definition(): array
     {
         return [
+            'number' => 'CAM'.$this->faker->unique()->randomNumber(6),
             'title' => $this->faker->sentence(3),
             'objective' => $this->faker->text(),
             'start_date' => $this->faker->dateTimeBetween('-1 year', '-6 month'),

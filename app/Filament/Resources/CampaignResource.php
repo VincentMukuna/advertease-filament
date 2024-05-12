@@ -23,8 +23,14 @@ class CampaignResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('number')
+                    ->default('CAM-'.random_int(100000, 999999))
+                    ->disabled()
+                    ->dehydrated()
+                    ->required()
+                    ->maxLength(32)
+                    ->unique(Campaign::class, 'number', ignoreRecord: true),
                 Forms\Components\Group::make()->schema([
-
                     Forms\Components\Section::make('Details')->schema([
                         Forms\Components\TextInput::make('title')
                             ->required(),
@@ -74,6 +80,9 @@ class CampaignResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('number')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->limit(30)
                     ->searchable(),
