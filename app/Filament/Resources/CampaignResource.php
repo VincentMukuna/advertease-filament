@@ -87,8 +87,10 @@ class CampaignResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('target_audience')
+                    ->limit(25)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('brand.name')
+                    ->limit(30)
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
