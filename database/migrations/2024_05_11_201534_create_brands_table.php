@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('bio');
-            $table->string('website');
+            $table->string('website')->nullable();
             $table->string('email');
             $table->string('phone');
-            $table->json('social_media_links');
+            $table->json('social_media_links')->nullable();
             $table->foreignId('user_id');
             $table->timestamps();
         });
