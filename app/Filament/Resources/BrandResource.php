@@ -20,26 +20,33 @@ class BrandResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\Textarea::make('bio')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('website')
-                    ->required(),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required(),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->required(),
-                Forms\Components\Textarea::make('social_media_links')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make('Details')->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->required(),
+                            Forms\Components\MarkdownEditor::make('bio')
+                                ->required()
+                                ->columnSpanFull(),
+                        ]),
+                    ])->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make('Contact')->schema([
+                        Forms\Components\TextInput::make('website')
+                            ->prefixIcon('heroicon-o-globe-alt')
+                            ->required(),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->prefixIcon('heroicon-o-at-symbol')
+                            ->required(),
+                        Forms\Components\TextInput::make('phone')
+                            ->tel()
+                            ->prefixIcon('heroicon-o-phone')
+                            ->required(),
+                    ])->columnSpan(['lg' => 1]),
+                ])->columnSpan(['lg' => 1]),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
