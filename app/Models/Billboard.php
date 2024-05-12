@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enum\Billboard\BookingStatus;
+use App\Enum\Billboard\Size;
+use App\Enum\Billboard\Type;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,6 +41,9 @@ class Billboard extends Model implements HasMedia
      * @var array
      */
     protected $casts = [
+        'booking_status' => BookingStatus::class,
+        'size' => Size::class,
+        'type' => Type::class,
         'id' => 'integer',
         'daily_rate' => 'decimal:2',
         'is_visible' => 'boolean',
