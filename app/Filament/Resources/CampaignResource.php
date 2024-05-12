@@ -94,6 +94,10 @@ class CampaignResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('budget')
                     ->numeric()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make(),
+                        Tables\Columns\Summarizers\Average::make(),
+                    ])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('target_audience')
                     ->limit(25)
