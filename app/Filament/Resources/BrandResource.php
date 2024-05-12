@@ -35,6 +35,8 @@ class BrandResource extends Resource
                     Forms\Components\Section::make('Contact')->schema([
                         Forms\Components\TextInput::make('website')
                             ->prefixIcon('heroicon-o-globe-alt')
+                            ->url()
+                            ->prefix('https://')
                             ->required(),
                         Forms\Components\TextInput::make('email')
                             ->email()
