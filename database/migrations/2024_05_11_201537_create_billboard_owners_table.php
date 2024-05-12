@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('website');
             $table->string('email');
             $table->string('phone');
-            $table->json('social_media_links');
+            $table->json('social_media_links')->nullable();
             $table->timestamps();
         });
 
