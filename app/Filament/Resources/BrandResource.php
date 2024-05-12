@@ -24,20 +24,27 @@ class BrandResource extends Resource
                     ->schema([
                         Forms\Components\Section::make('Details')->schema([
                             Forms\Components\TextInput::make('name')
+
                                 ->required(),
+                            Forms\Components\Select::make('user_id')
+                                ->relationship('user', 'name')
+                                ->unique('brands', ignoreRecord: true)
+                                ->required()
+                                ->native(false)
+                                ->placeholder('Select a user')
+                                ->searchable()
+                                ->prefixIcon('heroicon-o-user'),
                             Forms\Components\MarkdownEditor::make('bio')
                                 ->required()
                                 ->columnSpanFull(),
-                        ]),
+                        ])->columns(2),
                     ])->columnSpan(['lg' => 2]),
 
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Contact')->schema([
                         Forms\Components\TextInput::make('website')
                             ->prefixIcon('heroicon-o-globe-alt')
-                            ->url()
-                            ->prefix('https://')
-                            ->required(),
+                            ->url(),
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->prefixIcon('heroicon-o-at-symbol')
