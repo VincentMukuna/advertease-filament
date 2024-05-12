@@ -56,8 +56,10 @@ class BillboardOwnerResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->icon('heroicon-m-envelope')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
+                    ->icon('heroicon-m-phone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('billboards_count')
                     ->label('Billboards')
