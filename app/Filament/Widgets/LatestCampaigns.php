@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Filament\Resources\CampaignResource;
+use App\Models\Campaign;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -11,7 +12,7 @@ class LatestCampaigns extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 4;
 
     public function table(Table $table): Table
     {
@@ -23,6 +24,9 @@ class LatestCampaigns extends BaseWidget
             ->defaultPaginationPageOption(5)
             ->defaultSort('created_at', 'desc')
             ->columns([
+                Tables\Columns\TextColumn::make('number')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->limit(30)
                     ->searchable(),
@@ -45,7 +49,7 @@ class LatestCampaigns extends BaseWidget
             ])
             ->actions([
                 Tables\Actions\Action::make('open')
-                    ->url(fn (CampaignResource $record): string => CampaignResource::getUrl('edit', ['record' => $record])),
+                    ->url(fn (Campaign $record): string => CampaignResource::getUrl('edit', ['record' => $record])),
             ]);
     }
 }
