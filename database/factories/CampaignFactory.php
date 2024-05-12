@@ -20,12 +20,12 @@ class CampaignFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence(4),
+            'title' => $this->faker->sentence(3),
             'objective' => $this->faker->text(),
             'start_date' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
             'end_date' => $this->faker->dateTimeBetween('now', '+1 year'),
             'budget' => $this->faker->randomFloat(2, 0, 999999.99),
-            'target_audience' => $this->faker->sentence(4),
+            'target_audience' => $this->faker->sentence(2),
             'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
             'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
