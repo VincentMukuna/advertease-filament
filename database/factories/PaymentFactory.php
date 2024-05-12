@@ -2,10 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Campaign;
 use App\Models\Payment;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PaymentFactory extends Factory
 {
@@ -22,7 +21,7 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            'reference' => 'PAY' . $this->faker->unique()->randomNumber(6),
+            'reference' => 'PAY'.$this->faker->unique()->randomNumber(6),
             'currency' => $this->faker->currencyCode(),
             'amount' => $this->faker->randomFloat(2, 100, 2000),
             'provider' => $this->faker->randomElement(['stripe', 'paypal']),

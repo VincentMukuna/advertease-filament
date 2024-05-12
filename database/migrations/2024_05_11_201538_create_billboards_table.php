@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->decimal('daily_rate', 8, 2);
-            $table->enum('size', ["small","medium","large"]);
-            $table->enum('type', ["static","digital","backlit","mobile"]);
+            $table->enum('size', ['small', 'medium', 'large']);
+            $table->enum('type', ['static', 'digital', 'backlit', 'mobile']);
             $table->boolean('is_visible');
-            $table->enum('booking_status', ["available","booked"]);
+            $table->enum('booking_status', ['available', 'booked']);
             $table->decimal('lat', 10, 7);
             $table->decimal('lng', 10, 7);
             $table->unsignedInteger('reach')->nullable();

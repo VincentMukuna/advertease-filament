@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use Database\Seeders\LocalImages;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\Billboard;
 use App\Models\BillboardOwner;
+use Database\Seeders\LocalImages;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
 
 class BillboardFactory extends Factory
@@ -27,10 +26,10 @@ class BillboardFactory extends Factory
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->text(),
             'daily_rate' => $this->faker->randomFloat(2, 100, 100_000),
-            'size' => $this->faker->randomElement(["small","medium","large"]),
-            'type' => $this->faker->randomElement(["static","digital","backlit","mobile"]),
+            'size' => $this->faker->randomElement(['small', 'medium', 'large']),
+            'type' => $this->faker->randomElement(['static', 'digital', 'backlit', 'mobile']),
             'is_visible' => $this->faker->boolean(),
-            'booking_status' => $this->faker->randomElement(["available","booked"]),
+            'booking_status' => $this->faker->randomElement(['available', 'booked']),
             'lat' => $this->faker->latitude(),
             'lng' => $this->faker->longitude(),
             'reach' => $this->faker->randomNumber(6),

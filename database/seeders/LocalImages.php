@@ -7,7 +7,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class LocalImages
 {
-    public static function getRandomFile():SplFileInfo
+    public static function getRandomFile(): SplFileInfo
     {
         return collect(
             File::files(database_path('seeders/local_images'))

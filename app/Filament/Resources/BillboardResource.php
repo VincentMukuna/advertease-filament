@@ -2,16 +2,14 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\Billboard\BookingStatus;
 use App\Filament\Resources\BillboardResource\Pages;
-use App\Filament\Resources\BillboardResource\RelationManagers;
 use App\Models\Billboard;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BillboardResource extends Resource
 {
@@ -58,30 +56,38 @@ class BillboardResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->limit(30)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('daily_rate')
                     ->numeric()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Average::make()->label('Average Daily Rate'),
+                    ])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('size')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->badge()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_visible')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('booking_status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('lat')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('lng')
-                    ->numeric()
-                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('reach')
                     ->numeric()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()->label('Total Reach'),
+                        Tables\Columns\Summarizers\Average::make()->label('Average Reach'),
+
+                    ])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('billboardOwner.name')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('booking_status')
+                    ->icon(fn (BookingStatus $state) => match ($state) {
+                        BookingStatus::Available => 'heroicon-o-check-circle',
+                        BookingStatus::Booked => 'heroicon-o-x-circle',
+                    })
+                    ->label('Available')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -90,12 +96,29 @@ class BillboardResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+            ])
+            ->groupedBulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->requiresConfirmation(),
+            ])
+            ->groups([
+                Tables\Grouping\Group::make('billboardOwner.name')
+                    ->label('Billboard Owner')
+                    ->collapsible(),
+                Tables\Grouping\Group::make('created_at')
+                    ->label('Created At')
+                    ->date()
+                    ->collapsible(),
+                Tables\Grouping\Group::make('Type')
+                    ->label('Type')
+                    ->collapsible(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use App\Models\BillboardOwner;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BillboardOwnerFactory extends Factory
 {
@@ -21,7 +20,7 @@ class BillboardOwnerFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->company() .' '. $this->faker->randomElement(['Signage', 'Billboards', 'Media', 'Ads', 'Advertising']),
+            'name' => $this->faker->company().' '.$this->faker->randomElement(['Signage', 'Billboards', 'Media', 'Ads', 'Advertising']),
             'bio' => $this->faker->text(),
             'website' => $this->faker->url(),
             'email' => $this->faker->safeEmail(),
