@@ -3,7 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Enum\Billboard\BookingStatus;
+use App\Enum\Billboard\Size;
+use App\Enum\Billboard\Type;
+use App\Filament\Resources\BillboardOwnerResource\RelationManagers\BillboardsRelationManager;
 use App\Filament\Resources\BillboardResource\Pages;
+use App\Filament\Resources\BillboardResource\RelationManagers\CampaignsRelationManager;
 use App\Models\Billboard;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,34 +25,70 @@ class BillboardResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required(),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('daily_rate')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('size')
-                    ->required(),
-                Forms\Components\TextInput::make('type')
-                    ->required(),
-                Forms\Components\Toggle::make('is_visible')
-                    ->required(),
-                Forms\Components\TextInput::make('booking_status')
-                    ->required(),
-                Forms\Components\TextInput::make('lat')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('lng')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('reach')
-                    ->numeric(),
-                Forms\Components\Select::make('billboard_owner_id')
-                    ->relationship('billboardOwner', 'name')
-                    ->required(),
-            ]);
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make('Details')
+                        ->schema([
+                            Forms\Components\TextInput::make('title')
+                                ->required(),
+                            Forms\Components\Select::make('billboard_owner_id')
+                                ->relationship('billboardOwner', 'name')
+                                ->required()
+                                ->hiddenOn(BillboardsRelationManager::class),
+                            Forms\Components\MarkdownEditor::make('description')
+                                ->required()
+                                ->columnSpanFull(),
+
+                        ])->columns(2),
+                    Forms\Components\Section::make('Stats')
+                        ->schema([
+                            Forms\Components\TextInput::make('daily_rate')
+                                ->required()
+                                ->numeric(),
+                            Forms\Components\ToggleButtons::make('size')
+                                ->inline()
+                                ->options(Size::class)
+                                ->required(),
+                            Forms\Components\ToggleButtons::make('type')
+                                ->inline()
+                                ->options(Type::class)
+                                ->required(),
+
+                            Forms\Components\TextInput::make('reach')
+                                ->numeric(),
+                        ]),
+                    Forms\Components\Section::make('Images')
+                        ->schema([
+                            Forms\Components\SpatieMediaLibraryFileUpload::make('media')
+                                ->collection('billboard-images')
+                                ->multiple()
+                                ->maxFiles(5)
+                                ->hiddenLabel(),
+                        ])
+                        ->collapsible(),
+
+                ])->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Toggle::make('is_visible')
+                        ->required(),
+                    Forms\Components\ToggleButtons::make('booking_status')
+                        ->label('Booking Status')
+                        ->options(BookingStatus::class)
+                        ->inline()
+                        ->required(),
+                    Forms\Components\Section::make('Location')
+                        ->schema([
+                            Forms\Components\TextInput::make('lat')
+                                ->required()
+                                ->numeric(),
+                            Forms\Components\TextInput::make('lng')
+                                ->required()
+                                ->numeric(),
+                        ]),
+
+                ])->columnSpan(['lg' => 1]),
+
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -58,6 +98,10 @@ class BillboardResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->limit(30)
                     ->searchable(),
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('billboard-image')
+                    ->label('Image')
+                    ->alignCenter()
+                    ->collection('billboard-images'),
                 Tables\Columns\TextColumn::make('daily_rate')
                     ->numeric()
                     ->summarize([
@@ -98,6 +142,7 @@ class BillboardResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
 
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
@@ -130,7 +175,7 @@ class BillboardResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CampaignsRelationManager::class,
         ];
     }
 

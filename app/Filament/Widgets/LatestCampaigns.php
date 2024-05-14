@@ -22,7 +22,7 @@ class LatestCampaigns extends BaseWidget
                 CampaignResource::getEloquentQuery()
             )
             ->defaultPaginationPageOption(5)
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('start_date', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('number')
                     ->searchable()

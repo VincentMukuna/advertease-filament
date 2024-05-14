@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BillboardOwnerResource\Pages;
+use App\Filament\Resources\BillboardOwnerResource\RelationManagers\BillboardsRelationManager;
 use App\Models\BillboardOwner;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -90,7 +91,7 @@ class BillboardOwnerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            BillboardsRelationManager::class,
         ];
     }
 

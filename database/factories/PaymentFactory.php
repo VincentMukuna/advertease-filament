@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Akaunting\Money\Currency;
 use App\Models\Campaign;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,7 +23,7 @@ class PaymentFactory extends Factory
     {
         return [
             'reference' => 'PAY'.$this->faker->unique()->randomNumber(6),
-            'currency' => $this->faker->currencyCode(),
+            'currency' => $this->faker->randomElement(collect(Currency::getCurrencies())->keys()),
             'amount' => $this->faker->randomFloat(2, 100, 2000),
             'provider' => $this->faker->randomElement(['stripe', 'paypal']),
             'method' => $this->faker->randomElement(['credit_card', 'bank_transfer', 'paypal', 'mpesa']),

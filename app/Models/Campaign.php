@@ -18,15 +18,7 @@ class Campaign extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'title',
-        'objective',
-        'start_date',
-        'end_date',
-        'budget',
-        'target_audience',
-        'brand_id',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast to native types.
@@ -39,6 +31,7 @@ class Campaign extends Model
         'end_date' => 'date',
         'budget' => 'decimal:2',
         'brand_id' => 'integer',
+
     ];
 
     public function payments(): HasMany
