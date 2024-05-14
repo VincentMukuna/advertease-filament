@@ -46,6 +46,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasOne(Brand::class);
     }
 
+    public function billboardCompany(): HasOne
+    {
+        return $this->hasOne(BillboardOwner::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

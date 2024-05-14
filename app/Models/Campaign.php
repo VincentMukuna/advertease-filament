@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enum\UserRoleEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +35,19 @@ class Campaign extends Model
         'brand_id' => 'integer',
 
     ];
+
+    protected static function booted(): void
+    {
+
+        static::addGlobalScope('brand', function (Builder $query) {
+            if (auth()->user()) {
+                if (auth()->user()->hasRole(UserRoleEnum::SuperAdmin)) {
+                    return;
+                }
+                $query->where('brand_id', auth()->user()->brand->id);
+            }
+        });
+    }
 
     public function payments(): HasMany
     {

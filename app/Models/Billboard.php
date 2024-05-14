@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enum\Billboard\BookingStatus;
 use App\Enum\Billboard\Size;
 use App\Enum\Billboard\Type;
+use App\Enum\UserRoleEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -51,6 +53,18 @@ class Billboard extends Model implements HasMedia
         'lng' => 'decimal:7',
         'billboard_owner_id' => 'integer',
     ];
+
+    protected static function booted(): void
+    {
+
+        static::addGlobalScope('own', function (Builder $query) {
+            if (auth()->user()) {
+                if (auth()->user()->hasRole(UserRoleEnum::BillboardOwner)) {
+                    $query->where('billboard_owner_id', auth()->user()->billboardCompany->id);
+                }
+            }
+        });
+    }
 
     public function campaigns(): BelongsToMany
     {
