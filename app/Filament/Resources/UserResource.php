@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\UserRoleEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
@@ -26,11 +27,11 @@ class UserResource extends Resource
                     ->email()
                     ->unique('users')
                     ->required(),
-                //                         Forms\Components\Select::make('roles')
-                //                             ->relationship('roles', 'name')
-                //                             ->multiple()
-                //                             ->preload()
-                //                             ->searchable(),
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->hiddenOn(['view', 'edit'])
@@ -50,6 +51,12 @@ class UserResource extends Resource
                     ->icon(fn ($state) => $state ? 'heroicon-o-check-badge' : 'heroicon-o-x-mark')
                     ->color(fn ($state) => $state ? 'success' : 'warning')
                     ->label('Verified'),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->badge()
+                    ->icon(fn ($state) => UserRoleEnum::from($state)->getIcon())
+                    ->color(fn ($state) => UserRoleEnum::from($state)->getColor())
+                    ->formatStateUsing(fn ($state) => UserRoleEnum::from($state)->getLabel())
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

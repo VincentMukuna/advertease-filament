@@ -1,25 +1,26 @@
 <?php
 
-namespace App\Filament\Resources\CampaignResource\RelationManagers;
+namespace App\Filament\Resources\BillboardOwnerResource\RelationManagers;
 
-use App\Filament\Resources\PaymentResource;
+use App\Filament\Resources\AddressResource;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class PaymentsRelationManager extends RelationManager
+class AddressesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'payments';
+    protected static string $relationship = 'addresses';
 
     public function form(Form $form): Form
     {
-        return PaymentResource::form($form);
+        return AddressResource::form($form);
     }
 
     public function table(Table $table): Table
     {
-        return PaymentResource::table($table)
+        return AddressResource::table($table)
+            ->recordTitleAttribute('id')
             ->filters([
                 //
             ])
@@ -30,8 +31,10 @@ class PaymentsRelationManager extends RelationManager
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->groupedBulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 }

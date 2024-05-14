@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BrandResource\Pages;
+use App\Filament\Resources\BrandResource\RelationManagers\AddressesRelationManager;
 use App\Filament\Resources\BrandResource\RelationManagers\CampaignsRelationManager;
 use App\Models\Brand;
 use Filament\Forms;
@@ -90,6 +91,7 @@ class BrandResource extends Resource
     {
         return [
             CampaignsRelationManager::class,
+            AddressesRelationManager::class,
         ];
     }
 

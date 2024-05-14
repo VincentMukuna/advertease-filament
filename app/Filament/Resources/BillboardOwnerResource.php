@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BillboardOwnerResource\Pages;
+use App\Filament\Resources\BillboardOwnerResource\RelationManagers\AddressesRelationManager;
 use App\Filament\Resources\BillboardOwnerResource\RelationManagers\BillboardsRelationManager;
 use App\Models\BillboardOwner;
 use Filament\Forms;
@@ -92,6 +93,7 @@ class BillboardOwnerResource extends Resource
     {
         return [
             BillboardsRelationManager::class,
+            AddressesRelationManager::class,
         ];
     }
 

@@ -7,7 +7,6 @@ use App\Enum\Billboard\Size;
 use App\Enum\Billboard\Type;
 use App\Filament\Resources\BillboardOwnerResource\RelationManagers\BillboardsRelationManager;
 use App\Filament\Resources\BillboardResource\Pages;
-use App\Filament\Resources\BillboardResource\RelationManagers\CampaignsRelationManager;
 use App\Models\Billboard;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -142,7 +141,7 @@ class BillboardResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
 
             ])
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])
@@ -175,7 +174,6 @@ class BillboardResource extends Resource
     public static function getRelations(): array
     {
         return [
-            CampaignsRelationManager::class,
         ];
     }
 

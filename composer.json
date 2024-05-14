@@ -16,6 +16,7 @@
         "squirephp/currencies-en": "^3.5"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
         "laravel-shift/blueprint": "^2.10",
         "laravel/pint": "^1.13",

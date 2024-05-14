@@ -37,4 +37,14 @@ class Address extends Model
     {
         return $this->morphedByMany(Addressable::class, 'addressable');
     }
+
+    public function brands(): MorphToMany
+    {
+        return $this->morphedByMany(Brand::class, 'addressable');
+    }
+
+    public function billboardOwners(): MorphToMany
+    {
+        return $this->morphedByMany(BillboardOwner::class, 'addressable');
+    }
 }

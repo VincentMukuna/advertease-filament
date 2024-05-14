@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\BillboardOwner;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BillboardOwnerFactory extends Factory
@@ -26,6 +27,14 @@ class BillboardOwnerFactory extends Factory
             'email' => $this->faker->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'social_media_links' => '{}',
+            'user_id' => User::factory(),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (BillboardOwner $owner) {
+            $owner->user->assignRole('billboard_owner');
+        });
     }
 }

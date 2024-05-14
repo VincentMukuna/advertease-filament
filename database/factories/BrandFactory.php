@@ -30,4 +30,13 @@ class BrandFactory extends Factory
             'user_id' => User::factory(),
         ];
     }
+
+    public function configure(): BrandFactory
+    {
+        return $this->afterCreating(function (Brand $brand) {
+
+            $brand->user->assignRole('advertiser');
+
+        });
+    }
 }

@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable;
+    use HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -35,6 +36,16 @@ class User extends Authenticatable implements FilamentUser
         'remember_token',
     ];
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
+
+    public function brand(): HasOne
+    {
+        return $this->hasOne(Brand::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -46,15 +57,5 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return true;
-    }
-
-    public function brand(): HasOne
-    {
-        return $this->hasOne(Brand::class);
     }
 }
