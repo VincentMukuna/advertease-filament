@@ -61,7 +61,7 @@ class Campaign extends Model
 
     public function billboards(): BelongsToMany
     {
-        return $this->belongsToMany(Billboard::class);
+        return $this->belongsToMany(Billboard::class)->using(BillboardCampaign::class);
     }
 
     public function addresses(): MorphToMany

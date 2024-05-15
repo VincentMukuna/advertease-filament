@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
                 )
                 ->sequence(fn ($sequence) => [
                     'billboard_owner_id' => $billboardOwners->random(1)->first()->id,
-                ]))
+                ]), ['status' => 'active'])
             ->create()
         );
         $this->command->info(PHP_EOL.'Campaigns created.');

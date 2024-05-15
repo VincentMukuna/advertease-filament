@@ -68,7 +68,7 @@ class Billboard extends Model implements HasMedia
 
     public function campaigns(): BelongsToMany
     {
-        return $this->belongsToMany(Campaign::class);
+        return $this->belongsToMany(Campaign::class)->using(BillboardCampaign::class);
     }
 
     public function billboardOwner(): BelongsTo
