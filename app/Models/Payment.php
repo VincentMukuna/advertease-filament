@@ -42,10 +42,9 @@ class Payment extends Model
 
         static::addGlobalScope('brand', function (Builder $query) {
             if (auth()->user()) {
-                if (auth()->user()->hasRole(UserRoleEnum::SuperAdmin)) {
-                    return;
+                if (auth()->user()->hasRole(UserRoleEnum::Advertiser)) {
+                    $query->whereIn('campaign_id', auth()->user()->brand->campaigns->pluck('id'));
                 }
-                $query->whereIn('campaign_id', auth()->user()->brand->campaigns->pluck('id'));
             }
         });
     }

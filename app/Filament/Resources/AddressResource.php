@@ -17,6 +17,8 @@ class AddressResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-map-pin';
 
+    protected static bool $isDiscovered = false;
+
     public static function form(Form $form): Form
     {
         return $form

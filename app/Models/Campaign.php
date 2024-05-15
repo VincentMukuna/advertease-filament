@@ -41,12 +41,12 @@ class Campaign extends Model
 
         static::addGlobalScope('brand', function (Builder $query) {
             if (auth()->user()) {
-                if (auth()->user()->hasRole(UserRoleEnum::SuperAdmin)) {
-                    return;
+                if (auth()->user()->hasRole(UserRoleEnum::Advertiser)) {
+                    $query->where('brand_id', auth()->user()->brand->id);
                 }
-                $query->where('brand_id', auth()->user()->brand->id);
             }
         });
+
     }
 
     public function payments(): HasMany

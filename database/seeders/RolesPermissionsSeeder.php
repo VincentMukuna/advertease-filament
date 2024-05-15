@@ -62,7 +62,6 @@ class RolesPermissionsSeeder extends Seeder
             'create_billboard::owner',
             'delete_billboard::owner',
             'update_billboard::owner',
-            'view_any_billboard::owner',
 
             'create_address',
             'delete_address',
