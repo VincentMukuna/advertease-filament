@@ -22,8 +22,8 @@ return new class extends Migration
             $table->enum('type', ['static', 'digital', 'backlit', 'mobile']);
             $table->boolean('is_visible');
             $table->enum('booking_status', ['available', 'booked']);
-            $table->decimal('lat', 10, 7);
-            $table->decimal('lng', 10, 7);
+            $table->decimal('lat', 10, 7)->min(-90)->max(90);
+            $table->decimal('lng', 10, 7)->min(-180)->max(180);
             $table->unsignedInteger('reach')->nullable();
             $table->foreignId('billboard_owner_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
