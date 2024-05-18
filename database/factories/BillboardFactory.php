@@ -25,7 +25,7 @@ class BillboardFactory extends Factory
         return [
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->text(),
-            'daily_rate' => $this->faker->randomFloat(2, 100, 100_000),
+            'daily_rate' => $this->faker->randomFloat(2, 100, 10000),
             'size' => $this->faker->randomElement(['small', 'medium', 'large']),
             'type' => $this->faker->randomElement(['static', 'digital', 'backlit', 'mobile']),
             'is_visible' => $this->faker->boolean(),

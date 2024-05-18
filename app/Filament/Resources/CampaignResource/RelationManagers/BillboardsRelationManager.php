@@ -4,11 +4,15 @@ namespace App\Filament\Resources\CampaignResource\RelationManagers;
 
 use App\Enum\Billboard\BookingStatus;
 use App\Filament\Resources\BillboardResource;
+use App\Models\Billboard;
+use Carbon\Carbon;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class BillboardsRelationManager extends RelationManager
 {
@@ -63,6 +67,32 @@ class BillboardsRelationManager extends RelationManager
                     ->label('Add Billboard')
                     ->recordSelectOptionsQuery(function (Builder $query) {
                         $query->where('booking_status', BookingStatus::Available);
+                    })
+                    ->using(function (Model $record, array $data, Tables\Actions\AttachAction $action) {
+                        $campaign = $this->getOwnerRecord();
+                        $startDate = Carbon::make($campaign->start_date);
+                        $endDate = Carbon::make($campaign->end_date);
+                        $campaignDuration = $startDate->diffInDays($endDate);
+                        $budget = $campaign->budget;
+                        $totalDailyRate = $campaign
+                            ->billboards
+                            ->map(fn (Billboard $billboard) => $billboard->daily_rate)
+                            ->sum();
+                        $attachedRate = Billboard::find($data['recordId'])->daily_rate;
+
+                        $newTotal = ($totalDailyRate + $attachedRate) * $campaignDuration;
+
+                        dd($newTotal.'-'.$budget);
+                        if ($newTotal > $budget) {
+                            Notification::make()
+                                ->danger()
+                                ->title("You've surpassed your campaign's budget by ".$newTotal - $budget)
+                                ->body('Try increasing it first!')
+                                ->send();
+                            $action->halt();
+                        }
+
+                        return $action;
                     })
                     ->preloadRecordSelect(true)
                     ->recordTitleAttribute('title'),

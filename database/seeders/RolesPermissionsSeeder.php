@@ -37,12 +37,6 @@ class RolesPermissionsSeeder extends Seeder
             'view_billboard',
             'view_any_billboard',
 
-            'create_address',
-            'delete_address',
-            'view_address',
-            'update_address',
-            'view_any_address',
-
             'create_payment',
             'delete_payment',
             'view_payment',
@@ -62,12 +56,6 @@ class RolesPermissionsSeeder extends Seeder
             'create_billboard::owner',
             'delete_billboard::owner',
             'update_billboard::owner',
-
-            'create_address',
-            'delete_address',
-            'view_address',
-            'update_address',
-            'view_any_address',
 
         ]);
 

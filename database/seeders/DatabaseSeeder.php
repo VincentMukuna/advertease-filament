@@ -9,6 +9,7 @@ use App\Models\Brand;
 use App\Models\Campaign;
 use App\Models\Payment;
 use App\Models\User;
+use Closure;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -55,18 +56,18 @@ class DatabaseSeeder extends Seeder
         $this->command->info(PHP_EOL.'Billboard owners created.');
 
         $this->command->warn(PHP_EOL.'Creating campaigns...');
-        $campaigns = $this->withProgressBar(10, fn () => Campaign::factory(1)
+        $this->withProgressBar(10, fn () => Campaign::factory()
             ->sequence(fn ($sequence) => ['brand_id' => $brands->random(1)->first()->id])
             ->has(Payment::factory()->count(rand(3, 5)))
-            ->hasAttached(Billboard::factory()
-                ->count(rand(5, 10))
-                ->state(
-                    ['is_visible' => true, 'booking_status' => 'available']
-                )
-                ->sequence(fn ($sequence) => [
-                    'billboard_owner_id' => $billboardOwners->random(1)->first()->id,
-                ]), ['status' => 'active'])
-
+            ->hasAttached(
+                Billboard::factory()
+                    ->count(rand(5, 10))
+                    ->state(
+                        ['is_visible' => true, 'booking_status' => 'available']
+                    )
+                    ->sequence(fn ($sequence) => [
+                        'billboard_owner_id' => $billboardOwners->random(1)->first()->id,
+                    ]), ['status' => 'active'])
             ->create()
         );
         $this->command->info(PHP_EOL.'Campaigns created.');
@@ -84,7 +85,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info(PHP_EOL.'Seeding complete.');
     }
 
-    protected function withProgressBar(int $amount, \Closure $createCollectionOfOne): Collection
+    protected function withProgressBar(int $amount, Closure $createCollectionOfOne): Collection
     {
         $progressBar = new ProgressBar($this->command->getOutput(), $amount);
 

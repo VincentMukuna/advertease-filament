@@ -10,7 +10,7 @@ class LocalImages
     public static function billboard(): SplFileInfo
     {
         return collect(
-            File::files(database_path('seeders/local_images'))
+            File::files(database_path('seeders/local_images/billboards'))
         )->random();
     }
 
