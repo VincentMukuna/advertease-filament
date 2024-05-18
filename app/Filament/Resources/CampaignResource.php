@@ -32,6 +32,10 @@ class CampaignResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->limit(30)
                     ->searchable(),
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('campaign-images')
+                    ->label('Image')
+                    ->alignCenter()
+                    ->collection('campaign-images'),
                 Tables\Columns\TextColumn::make('start_date')
                     ->date()
                     ->sortable(),
@@ -125,6 +129,16 @@ class CampaignResource extends Resource
                             ->columnSpanFull(),
 
                     ])->columns(2),
+
+                    Forms\Components\Section::make('Images')
+                        ->schema([
+                            Forms\Components\SpatieMediaLibraryFileUpload::make('media')
+                                ->collection('campaign-images')
+                                ->multiple()
+                                ->maxFiles(5)
+                                ->hiddenLabel(),
+                        ])
+                        ->collapsible(),
 
                 ])->columns(2)->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
