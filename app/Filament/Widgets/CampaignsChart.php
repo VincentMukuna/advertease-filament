@@ -2,25 +2,39 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Campaign;
 use Filament\Widgets\ChartWidget;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+use Illuminate\Support\Carbon;
 
 class CampaignsChart extends ChartWidget
 {
-    protected static ?string $heading = 'Campaigns per month';
+    protected static ?string $heading = 'Campaigns this year';
 
     protected static ?int $sort = 2;
 
     protected function getData(): array
     {
+        $campaignsData = Trend::model(Campaign::class)
+            ->between(
+                start: now()->startOfYear(),
+                end: now()
+
+            )
+            ->perMonth()
+            ->count();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Campaigns',
-                    'data' => [24, 34, 45, 33, 55, 57, 67, 87, 75, 85, 96, 89],
+
+                    'data' => $campaignsData->map(fn (TrendValue $value) => $value->aggregate),
                     'fill' => 'start',
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'labels' => $campaignsData->map(fn (TrendValue $value) => Carbon::make($value->date)->shortEnglishMonth),
         ];
     }
 

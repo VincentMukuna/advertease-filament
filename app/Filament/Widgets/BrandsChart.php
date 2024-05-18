@@ -2,7 +2,11 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Brand;
 use Filament\Widgets\ChartWidget;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+use Illuminate\Support\Carbon;
 
 class BrandsChart extends ChartWidget
 {
@@ -12,15 +16,17 @@ class BrandsChart extends ChartWidget
 
     protected function getData(): array
     {
+        $brandsData = Trend::model(Brand::class)->perMonth()->between(start: now()->startOfYear(), end: now())->count();
+
         return [
             'datasets' => [
                 [
-                    'label' => 'Customers',
-                    'data' => [43, 56, 67, 78, 89, 93, 103, 105, 136, 143, 157, 173],
+                    'label' => 'Brands',
+                    'data' => $brandsData->map(fn (TrendValue $value) => $value->aggregate),
                     'fill' => 'start',
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'labels' => $brandsData->map(fn (TrendValue $value) => Carbon::make($value->date)->shortEnglishMonth),
         ];
     }
 
