@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Campaign;
+use Database\Seeders\LocalImages;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CampaignFactory extends Factory
@@ -30,5 +31,16 @@ class CampaignFactory extends Factory
             'created_at' => $this->faker->dateTimeBetween('-1 year', '-6 month'),
             'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
+    }
+
+    public function configure()
+    {
+        $this->afterCreating(function (Campaign $campaign) {
+            $campaign
+                ->addMedia(LocalImages::campaign())
+                ->preservingOriginal()
+                ->toMediaCollection('campaign-images');
+        });
+
     }
 }

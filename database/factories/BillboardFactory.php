@@ -64,7 +64,7 @@ class BillboardFactory extends Factory
         return $this->afterCreating(function (Billboard $product) {
             try {
                 $product
-                    ->addMedia(LocalImages::getRandomFile())
+                    ->addMedia(LocalImages::billboard())
                     ->preservingOriginal()
                     ->toMediaCollection('billboard-images');
             } catch (UnreachableUrl $exception) {
