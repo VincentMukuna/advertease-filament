@@ -32,6 +32,14 @@ class BillboardResource extends Resource
                                 ->required(),
                             Forms\Components\Select::make('billboard_owner_id')
                                 ->relationship('billboardOwner', 'name')
+                                ->default(function () {
+                                    if (auth()->user()->hasRole('billboard_owner')) {
+                                        return auth()->user()->billboardCompany->id;
+                                    }
+
+                                    return null;
+                                })
+                                ->disabled(auth()->user()->hasRole('billboard_owner'))
                                 ->required()
                                 ->hiddenOn(BillboardsRelationManager::class),
                             Forms\Components\MarkdownEditor::make('description')

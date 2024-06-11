@@ -28,15 +28,16 @@ class BillboardOwnerPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Rose,
             ])
-            ->discoverResources(in: app_path('Filament/BillboardOwner/Resources'), for: 'App\\Filament\\BillboardOwner\\Resources')
-            ->discoverPages(in: app_path('Filament/BillboardOwner/Pages'), for: 'App\\Filament\\BillboardOwner\\Pages')
+            ->login()
+            ->topNavigation()
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/BillboardOwner/Widgets'), for: 'App\\Filament\\BillboardOwner\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
