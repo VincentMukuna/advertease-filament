@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enum\Billboard\BookingStatus;
 use App\Enum\Billboard\Size;
 use App\Enum\Billboard\Type;
+use App\Enum\UserRoleEnum;
 use App\Filament\Resources\BillboardOwnerResource\RelationManagers\BillboardsRelationManager;
 use App\Filament\Resources\BillboardResource\Pages;
 use App\Filament\Resources\BillboardResource\RelationManagers\CampaignsRelationManager;
@@ -33,13 +34,13 @@ class BillboardResource extends Resource
                             Forms\Components\Select::make('billboard_owner_id')
                                 ->relationship('billboardOwner', 'name')
                                 ->default(function () {
-                                    if (auth()->user()->hasRole('billboard_owner')) {
+                                    if (auth()->user()->hasRole(UserRoleEnum::BillboardOwner)) {
                                         return auth()->user()->billboardCompany->id;
                                     }
 
                                     return null;
                                 })
-                                ->disabled(auth()->user()->hasRole('billboard_owner'))
+                                ->hidden(auth()->user()->hasRole(UserRoleEnum::BillboardOwner))
                                 ->required()
                                 ->hiddenOn(BillboardsRelationManager::class),
                             Forms\Components\MarkdownEditor::make('description')

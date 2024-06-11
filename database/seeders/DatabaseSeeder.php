@@ -40,6 +40,22 @@ class DatabaseSeeder extends Seeder
 
         $this->call(RolesPermissionsSeeder::class);
 
+        $advertiser = User::factory(1)
+            ->has(Brand::factory(1)->hasAttached(Address::factory()->count(rand(1, 3))))
+            ->create([
+                'name' => 'Advertiser',
+                'email' => 'advertiser@localhost.com',
+            ]);
+        $advertiser->first()->assignRole('advertiser');
+
+        $billboardOwner = User::factory(1)
+            ->has(BillboardOwner::factory(1)->hasAttached(Address::factory()->count(rand(1, 3))), 'billboardCompany')
+            ->create([
+                'name' => 'Billboard Owner',
+                'email' => 'vendor@localhost.com',
+            ]);
+        $billboardOwner->first()->assignRole('billboard_owner');
+
         //Create users
         $this->command->warn(PHP_EOL.'Creating users...');
 

@@ -33,7 +33,7 @@ class AdvertiserPanelProvider extends PanelProvider
                 'primary' => Color::Teal,
             ])
             ->login()
-            ->discoverResources(in: app_path('Filament/Advertiser/Resources'), for: 'App\\Filament\\Advertiser\\Resources')
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Advertiser/Pages'), for: 'App\\Filament\\Advertiser\\Pages')
             ->pages([
                 Pages\Dashboard::class,

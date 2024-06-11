@@ -22,7 +22,6 @@ class Payment extends Model
         'reference',
         'provider',
         'method',
-        'currency',
         'campaign_id',
     ];
 

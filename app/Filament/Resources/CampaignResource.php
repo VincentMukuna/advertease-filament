@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\UserRoleEnum;
 use App\Filament\Resources\BrandResource\RelationManagers\CampaignsRelationManager;
 use App\Filament\Resources\CampaignResource\Pages;
 use App\Filament\Resources\CampaignResource\RelationManagers\BillboardsRelationManager;
@@ -190,6 +191,16 @@ class CampaignResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('brand_id')
                             ->relationship('brand', 'name')
+                            ->default(function () {
+                                if (auth()->user()->hasRole(UserRoleEnum::Advertiser)) {
+                                    return auth()->user()->brand->id;
+                                }
+
+                                return null;
+                            })
+                            ->hidden(function () {
+                                return auth()->user()->hasRole(UserRoleEnum::Advertiser);
+                            })
                             ->required()
                             ->hiddenOn(CampaignsRelationManager::class),
                         Forms\Components\TextInput::make('budget')

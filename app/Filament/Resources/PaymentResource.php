@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use Akaunting\Money\Currency;
 use App\Filament\Resources\PaymentResource\Pages;
 use App\Models\Payment;
 use Filament\Forms;
@@ -29,11 +28,6 @@ class PaymentResource extends Resource
                 Forms\Components\TextInput::make('amount')
                     ->numeric()
                     ->rules(['regex:/^\d{1,6}(\.\d{0,2})?$/'])
-                    ->required(),
-
-                Forms\Components\Select::make('currency')
-                    ->options(collect(Currency::getCurrencies())->mapWithKeys(fn ($item, $key) => [$key => data_get($item, 'name')]))
-                    ->searchable()
                     ->required(),
 
                 Forms\Components\ToggleButtons::make('provider')
@@ -67,8 +61,7 @@ class PaymentResource extends Resource
                             ->searchable(),
 
                         Tables\Columns\TextColumn::make('amount')
-                            ->sortable()
-                            ->money(fn ($record) => $record->currency),
+                            ->sortable(),
                     ]),
 
                 Tables\Columns\ColumnGroup::make('Context')

@@ -32,7 +32,6 @@ class RolesPermissionsSeeder extends Seeder
             'delete_brand',
             'view_brand',
             'update_brand',
-            'view_any_brand',
 
             'view_billboard',
             'view_any_billboard',
