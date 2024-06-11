@@ -15,6 +15,7 @@ return new class extends Migration
 
         Schema::create('billboards', function (Blueprint $table) {
             $table->id();
+            $table->string('number')->unique();
             $table->string('title');
             $table->text('description');
             $table->decimal('daily_rate', 8, 2);

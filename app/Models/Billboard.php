@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -66,13 +67,26 @@ class Billboard extends Model implements HasMedia
         });
     }
 
-    public function campaigns(): BelongsToMany
-    {
-        return $this->belongsToMany(Campaign::class)->using(BillboardCampaign::class);
-    }
-
     public function billboardOwner(): BelongsTo
     {
         return $this->belongsTo(BillboardOwner::class);
+    }
+
+    public function maintenances(): HasMany
+    {
+        return $this->hasMany(BillboardMaintenance::class);
+    }
+
+    public function activeCampaign(): ?Campaign
+    {
+        return $this->campaigns()
+            ->whereDate('start_date', '<=', value: now())
+            ->whereDate('end_date', '>=', value: now())
+            ->first();
+    }
+
+    public function campaigns(): BelongsToMany
+    {
+        return $this->belongsToMany(Campaign::class)->using(BillboardCampaign::class);
     }
 }

@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('campaigns', function (Blueprint $table) {
-            $table->string('number')->unique();
+        Schema::create('billboard_maintenance', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('billboard_id')->constrained()->cascadeOnDelete();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('Campaign', function (Blueprint $table) {
-            $table->dropColumn('number');
-        });
+        Schema::dropIfExists('billboard_maintenance');
     }
 };

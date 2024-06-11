@@ -26,44 +26,10 @@ class CampaignResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('number')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('title')
-                    ->limit(30)
-                    ->searchable(),
-                Tables\Columns\SpatieMediaLibraryImageColumn::make('campaign-images')
-                    ->label('Image')
-                    ->alignCenter()
-                    ->collection('campaign-images'),
-                Tables\Columns\TextColumn::make('start_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('end_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('budget')
-                    ->numeric()
-                    ->summarize([
-                        Tables\Columns\Summarizers\Sum::make(),
-                        Tables\Columns\Summarizers\Average::make(),
-                    ])
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('target_audience')
-                    ->limit(25)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('brand.name')
-                    ->limit(30)
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                ...static::getDetails(),
+                ...static::getDurationDetails(),
+                ...static::getStats(),
+                ...static::getBrandDetails(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
@@ -104,6 +70,85 @@ class CampaignResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getDetails(): array
+    {
+        return [
+
+            Tables\Columns\ColumnGroup::make('Details')
+                ->columns([
+                    Tables\Columns\TextColumn::make('number')
+                        ->searchable()
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('title')
+                        ->limit(30)
+                        ->searchable(),
+                    Tables\Columns\SpatieMediaLibraryImageColumn::make('campaign-images')
+                        ->label('Image')
+                        ->alignCenter()
+                        ->collection('campaign-images'),
+
+                ]),
+
+        ];
+    }
+
+    public static function getDurationDetails(): array
+    {
+        return [
+
+            Tables\Columns\ColumnGroup::make('Stats')
+                ->columns([
+                    Tables\Columns\TextColumn::make('start_date')
+                        ->date()
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('end_date')
+                        ->date()
+                        ->sortable(),
+
+                ]),
+
+        ];
+    }
+
+    public static function getStats(): array
+    {
+        return [
+            Tables\Columns\TextColumn::make('target_audience')
+                ->limit(25)
+                ->searchable(),
+            Tables\Columns\TextColumn::make('budget')
+                ->numeric()
+                ->summarize([
+                    Tables\Columns\Summarizers\Sum::make(),
+                    Tables\Columns\Summarizers\Average::make(),
+                ])
+                ->sortable(),
+
+        ];
+    }
+
+    public static function getBrandDetails(): array
+    {
+        return [
+
+            Tables\Columns\ColumnGroup::make('Brand Details')
+                ->columns([
+                    Tables\Columns\TextColumn::make('brand.name')
+                        ->label('Name')
+                        ->limit(30)
+                        ->numeric()
+                        ->sortable(),
+                    Tables\Columns\TextColumn::make('brand.email')
+                        ->label('Email')
+                        ->limit(30)
+                        ->numeric()
+                        ->sortable(),
+
+                ]),
+
+        ];
     }
 
     public static function form(Form $form): Form

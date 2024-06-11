@@ -41,6 +41,7 @@ class BillboardsRelationManager extends RelationManager
                         ->summarize([
                             Tables\Columns\Summarizers\Average::make()->label('Average Daily Rate'),
                         ])
+                        ->money()
                         ->sortable(),
                     Tables\Columns\TextColumn::make('size')
                         ->searchable(),
@@ -70,9 +71,11 @@ class BillboardsRelationManager extends RelationManager
                     })
                     ->using(function (Model $record, array $data, Tables\Actions\AttachAction $action) {
                         $campaign = $this->getOwnerRecord();
+
                         $startDate = Carbon::make($campaign->start_date);
                         $endDate = Carbon::make($campaign->end_date);
                         $campaignDuration = $startDate->diffInDays($endDate);
+
                         $budget = $campaign->budget;
                         $totalDailyRate = $campaign
                             ->billboards
@@ -81,8 +84,6 @@ class BillboardsRelationManager extends RelationManager
                         $attachedRate = Billboard::find($data['recordId'])->daily_rate;
 
                         $newTotal = ($totalDailyRate + $attachedRate) * $campaignDuration;
-
-                        dd($newTotal.'-'.$budget);
                         if ($newTotal > $budget) {
                             Notification::make()
                                 ->danger()
@@ -92,10 +93,11 @@ class BillboardsRelationManager extends RelationManager
                             $action->halt();
                         }
 
-                        return $action;
+                        $campaign->billboards()->attach($data['recordId']);
                     })
                     ->preloadRecordSelect(true)
-                    ->recordTitleAttribute('title'),
+                    ->recordTitleAttribute('title')
+                    ->recordSelectSearchColumns(['title', 'daily_rate']),
             ])
             ->actions([
                 Tables\Actions\DetachAction::make()->label('Remove'),

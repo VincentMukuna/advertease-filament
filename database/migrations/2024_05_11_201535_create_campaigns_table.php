@@ -15,6 +15,7 @@ return new class extends Migration
 
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
+            $table->string('number')->unique();
             $table->string('title');
             $table->text('objective');
             $table->date('start_date');

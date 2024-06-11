@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('reference');
             $table->string('provider');
             $table->string('method');
-            $table->string('currency');
             $table->foreignId('campaign_id')->constrained();
             $table->timestamps();
         });

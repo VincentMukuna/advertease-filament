@@ -7,6 +7,7 @@ use App\Enum\Billboard\Size;
 use App\Enum\Billboard\Type;
 use App\Filament\Resources\BillboardOwnerResource\RelationManagers\BillboardsRelationManager;
 use App\Filament\Resources\BillboardResource\Pages;
+use App\Filament\Resources\BillboardResource\RelationManagers\CampaignsRelationManager;
 use App\Models\Billboard;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -51,7 +52,6 @@ class BillboardResource extends Resource
                                 ->inline()
                                 ->options(Type::class)
                                 ->required(),
-
                             Forms\Components\TextInput::make('reach')
                                 ->numeric(),
                         ]),
@@ -174,6 +174,7 @@ class BillboardResource extends Resource
     public static function getRelations(): array
     {
         return [
+            CampaignsRelationManager::class,
         ];
     }
 

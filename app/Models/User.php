@@ -36,11 +36,6 @@ class User extends Authenticatable implements FilamentUser
         'remember_token',
     ];
 
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return true;
-    }
-
     public function brand(): HasOne
     {
         return $this->hasOne(Brand::class);
@@ -49,6 +44,11 @@ class User extends Authenticatable implements FilamentUser
     public function billboardCompany(): HasOne
     {
         return $this->hasOne(BillboardOwner::class);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
     }
 
     /**

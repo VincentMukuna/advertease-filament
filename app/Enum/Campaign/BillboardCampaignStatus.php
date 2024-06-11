@@ -8,7 +8,9 @@ use Filament\Support\Contracts\HasLabel;
 
 enum BillboardCampaignStatus: string implements HasColor, HasIcon, HasLabel
 {
+    case Pending = 'pending';
     case Printing = 'printing';
+
     case Installing = 'installing';
     case Active = 'active';
     case Maintenance = 'maintenance';
@@ -18,7 +20,8 @@ enum BillboardCampaignStatus: string implements HasColor, HasIcon, HasLabel
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::Printing => 'warning',
+            self::Pending => 'warning',
+            self::Printing => 'indigo',
             self::Installing => 'primary',
             self::Active => 'success',
             self::Completed => 'info',
@@ -29,6 +32,7 @@ enum BillboardCampaignStatus: string implements HasColor, HasIcon, HasLabel
     public function getIcon(): ?string
     {
         return match ($this) {
+            self::Pending => 'heroicon-o-arrow-path',
             self::Printing => 'heroicon-o-printer',
             self::Installing => 'heroicon-o-cog',
             self::Active => 'heroicon-o-rocket-launch',
@@ -41,6 +45,7 @@ enum BillboardCampaignStatus: string implements HasColor, HasIcon, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
+            self::Pending => 'Pending',
             self::Printing => 'Printing',
             self::Installing => 'Installing',
             self::Active => 'Active',

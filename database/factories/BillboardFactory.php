@@ -23,9 +23,10 @@ class BillboardFactory extends Factory
     public function definition(): array
     {
         return [
+            'number' => 'B'.$this->faker->unique()->randomNumber(5),
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->text(),
-            'daily_rate' => $this->faker->randomFloat(2, 100, 10000),
+            'daily_rate' => $this->faker->randomFloat(2, 100, 1000),
             'size' => $this->faker->randomElement(['small', 'medium', 'large']),
             'type' => $this->faker->randomElement(['static', 'digital', 'backlit', 'mobile']),
             'is_visible' => $this->faker->boolean(),

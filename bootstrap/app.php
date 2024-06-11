@@ -13,6 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
     })
+    ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
+        $schedule->job(\App\Jobs\UpdateMaintenanceStatus::class)->daily();
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

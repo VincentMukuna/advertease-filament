@@ -12,7 +12,6 @@ use App\Models\User;
 use Closure;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Console\Helper\ProgressBar;
 
@@ -25,9 +24,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::raw('SET time_zone=\'+00:00\'');
 
-        // Clear images
         Storage::deleteDirectory('public');
 
         $this->command->callSilently('shield:generate', ['--all' => true]);
@@ -63,11 +60,18 @@ class DatabaseSeeder extends Seeder
                 Billboard::factory()
                     ->count(rand(5, 10))
                     ->state(
-                        ['is_visible' => true, 'booking_status' => 'available']
+                        [
+                            'is_visible' => true,
+                            'booking_status' => 'available',
+                        ]
                     )
                     ->sequence(fn ($sequence) => [
                         'billboard_owner_id' => $billboardOwners->random(1)->first()->id,
-                    ]), ['status' => 'active'])
+                    ]),
+                [
+                    'status' => 'active',
+                    'active_at' => now(),
+                ])
             ->create()
         );
         $this->command->info(PHP_EOL.'Campaigns created.');
