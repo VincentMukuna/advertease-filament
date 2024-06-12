@@ -31,6 +31,14 @@ class BillboardResource extends Resource
                         ->schema([
                             Forms\Components\TextInput::make('title')
                                 ->required(),
+                            Forms\Components\TextInput::make('number')
+                                ->label('Billboard Number')
+                                ->default('B-'.random_int(100000, 999999))
+                                ->disabled()
+                                ->dehydrated()
+                                ->required()
+                                ->maxLength(32)
+                                ->unique(Billboard::class, 'number', ignoreRecord: true),
                             Forms\Components\Select::make('billboard_owner_id')
                                 ->relationship('billboardOwner', 'name')
                                 ->default(function () {

@@ -209,8 +209,10 @@ class CampaignResource extends Resource
                         Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\DatePicker::make('start_date')
+                                    ->default(now())
                                     ->required(),
                                 Forms\Components\DatePicker::make('end_date')
+                                    ->default(now()->addMonth(2))
                                     ->required(),
                             ]),
 

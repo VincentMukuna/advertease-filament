@@ -34,6 +34,7 @@ class BrandResource extends Resource
                                 ->required()
                                 ->native(false)
                                 ->placeholder('Select a user')
+                                ->preload()
                                 ->searchable()
                                 ->prefixIcon('heroicon-o-user'),
                             Forms\Components\MarkdownEditor::make('bio')

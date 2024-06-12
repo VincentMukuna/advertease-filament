@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
-use App\Contracts\CampaignInvoiceHandler;
 use App\DTO\CampaignInvoiceDTO;
 use App\DTO\InvoiceItemDTO;
 use App\Models\Campaign;
 
-class CampaignInvoiceService implements CampaignInvoiceHandler
+class CampaignInvoiceService
 {
     public function buildCampaignInvoice(Campaign $campaign): CampaignInvoiceDTO
     {

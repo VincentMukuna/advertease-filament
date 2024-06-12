@@ -36,6 +36,7 @@ class PaymentResource extends Resource
                     ->options([
                         'stripe' => 'Stripe',
                         'paypal' => 'PayPal',
+                        'mpesa' => 'Mpesa',
                     ])
                     ->required(),
 

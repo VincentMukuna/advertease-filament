@@ -8,6 +8,7 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^2.2",
         "bezhansalleh/filament-shield": "^3.2",
+        "eightynine/filament-reports": "^3.0",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "flowframe/laravel-trend": "^0.2.0",

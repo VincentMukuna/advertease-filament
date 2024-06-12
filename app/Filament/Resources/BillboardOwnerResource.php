@@ -27,9 +27,20 @@ class BillboardOwnerResource extends Resource
                         Forms\Components\Section::make('Details')->schema([
                             Forms\Components\TextInput::make('name')
                                 ->required(),
+                            Forms\Components\Select::make('user_id')
+                                ->relationship('user', 'name')
+                                ->unique('billboard_owners', ignoreRecord: true)
+                                ->required()
+                                ->native(false)
+                                ->placeholder('Select a user')
+                                ->preload()
+                                ->searchable()
+
+                                ->prefixIcon('heroicon-o-user'),
                             Forms\Components\MarkdownEditor::make('bio')
                                 ->required()
                                 ->columnSpanFull(),
+
                         ]),
                     ])->columnSpan(['lg' => 2]),
 
